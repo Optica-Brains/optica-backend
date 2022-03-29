@@ -61,7 +61,7 @@ Version:
     v1.0.0
 
 Django Version:
-    v1.9, v1.10, v1.11, v2.0, v2.1, 3.0
+    v1.9, v1.10, v1.11, v2.0, v2.1, 3.0 and greater
 
 Python Version:
     3.5, 3.6, 3.7 (tested); 2.7, 3.4 (assumed)
