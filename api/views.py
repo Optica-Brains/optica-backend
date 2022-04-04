@@ -17,3 +17,19 @@ class LoginView(generics.GenericAPIView):
 
         user_data = serializer.data
         return Response(user_data,status=status.HTTP_201_CREATED)
+
+
+# branch view
+class BranchList(generics.ListCreateAPIView):
+    queryset = Branch.objects.all()
+    serializer_class = BranchSerializer
+
+# order list view
+class OrderList(generics.ListCreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+# order detail
+class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer

@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.decorators import action
 from .models import *
 
 
@@ -30,4 +31,11 @@ class OrderSerializer(serializers.ModelSerializer):
     branch = BranchSerializer()
     class Meta:
         model = Order
-        fields = ['id','branch','departure','arrival']
+        fields = ['id','branch','departure_time','delivery_time']
+
+    def create(self,validated_data):
+        branch_serializer = BranchSerializer(validated_data.get('branch'))
+        branch_serializer.is_valid()
+        branch_serializer.save()
+        return Order.objects.create(**validated_data)
+
