@@ -87,10 +87,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'optica',
-        'USER':'james',
-        'PASSWORD':'password',
+        'USER':'marcos',
+        'PASSWORD':'getaways',
         'HOST': 'localhost',
-
     }
 }
 

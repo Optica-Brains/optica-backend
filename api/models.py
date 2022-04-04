@@ -47,8 +47,8 @@ class Branch(models.Model):
 
 
 class User(AbstractBaseUser,PermissionsMixin):
-    username = models.CharField(max_length = 50, unique = True, db_index = True)
     email = models.EmailField(max_length= 225, unique=True,db_index=True)
+    password = models.CharField(max_length=500,unique=True)
     is_verified = models.BooleanField(default=False) 
     is_active = models.BooleanField(default=True) 
     is_staff = models.BooleanField(default=False) 
@@ -58,7 +58,7 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     USERNAME_FIELD='email'
     REQUIRED_FIELDS=[
-        'username'
+        'password'
     ]
     objects = UserManager()
 
