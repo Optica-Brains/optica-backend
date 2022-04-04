@@ -84,7 +84,7 @@ class Order(models.Model):
     departure_time = models.DateTimeField(null = True)
     delivery_time= models.DateTimeField(null = True)
     status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
-    branch = models.ForeignKey(Branch,on_delete = models.CASCADE, null=False)
+    branch = models.ForeignKey(Branch,related_name='order_branch',on_delete=models.CASCADE, null=False)
     
     def __str__(self):
         return self.order_number
