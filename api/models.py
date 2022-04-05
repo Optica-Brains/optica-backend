@@ -8,22 +8,20 @@ class UserManager(BaseUserManager):
     Maintaiining query sets that can be run
     """
 
-    def create_user(self, username , email , password=None):
+    def create_user(self,email ,branch, password=None):
         """
         Creating normal user
         """
-        if username is None:
-            raise TypeError('Users should have username')
 
         if email is None:
             raise TypeError('Users should have email')
         
-        user = self.model(username=username, email=self.normalize_email(email))
+        user = self.model(email=self.normalize_email(email))
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, username , email , password=None):
+    def create_superuser(self,email , password=None):
         """
         Creating super user
         """
@@ -31,7 +29,7 @@ class UserManager(BaseUserManager):
             raise TypeError('Password should not be none')
 
 
-        user = self.create_user(username,email,password)
+        user = self.create_user(email,password)
         user.is_superuser =True
         user.is_staff =True
         user.save()
@@ -47,8 +45,8 @@ class Branch(models.Model):
 
 
 class User(AbstractBaseUser,PermissionsMixin):
-    username = models.CharField(max_length = 50, unique = True, db_index = True)
     email = models.EmailField(max_length= 225, unique=True,db_index=True)
+    password = models.CharField(max_length=500)
     is_verified = models.BooleanField(default=False) 
     is_active = models.BooleanField(default=True) 
     is_staff = models.BooleanField(default=False) 
@@ -58,12 +56,15 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     USERNAME_FIELD='email'
     REQUIRED_FIELDS=[
-        'username'
+        'password'
     ]
     objects = UserManager()
 
     def __str__(self):
         return self.email
+
+    def is_in_group(self,id):
+        return self.groups.filter(id__in=[id]).exists()
 
     def tokens(self):
         
@@ -86,7 +87,7 @@ class Order(models.Model):
     departure_time = models.DateTimeField(null = True)
     delivery_time= models.DateTimeField(null = True)
     status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
-    branch = models.ForeignKey(Branch,on_delete = models.CASCADE, null=False)
+    branch = models.ForeignKey(Branch,related_name='order_branch',on_delete=models.CASCADE, null=False)
     
     def __str__(self):
         return self.order_number
