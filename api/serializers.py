@@ -3,21 +3,11 @@ from rest_framework.decorators import action
 from .models import *
 
 
-class LoginSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(max_length=50,min_length=6,write_only=True)
 
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id','email','password']
-
-
-    def validate(self,attrs):
-        email = attrs.get('email','')
-        return attrs
-
-    # create user function
-    def create(self,validated_data):
-        return User.objects.create_user(**validated_data)
+        fields = '__all__'
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -55,6 +45,23 @@ class BranchSerializer(serializers.ModelSerializer):
                 order.delivery_time = order_data.get('delivery_time', order.delivery_time)
                 order.save()
             return instance
+
+
+class CreateUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(max_length=50,min_length=6,write_only=True)
+    class Meta:
+        branch = BranchSerializer(read_only=True)
+        model = User
+        fields = ['id','email','password','branch']
+
+
+    def validate(self,attrs):
+        email = attrs.get('email','')
+        return attrs
+
+    # create user function
+    # def create(self,validated_data):
+    #     return User.objects.create_user(**validated_data)
 
 
 

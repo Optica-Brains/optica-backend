@@ -8,7 +8,7 @@ class UserManager(BaseUserManager):
     Maintaiining query sets that can be run
     """
 
-    def create_user(self,email , password=None):
+    def create_user(self,email ,branch, password=None):
         """
         Creating normal user
         """
@@ -46,7 +46,7 @@ class Branch(models.Model):
 
 class User(AbstractBaseUser,PermissionsMixin):
     email = models.EmailField(max_length= 225, unique=True,db_index=True)
-    password = models.CharField(max_length=500,unique=True)
+    password = models.CharField(max_length=500)
     is_verified = models.BooleanField(default=False) 
     is_active = models.BooleanField(default=True) 
     is_staff = models.BooleanField(default=False) 
@@ -62,6 +62,9 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    def is_in_group(self,id):
+        return self.groups.filter(id__in=[id]).exists()
 
     def tokens(self):
         

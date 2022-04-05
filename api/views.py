@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from rest_framework import generics,status
+from rest_framework import generics,status,permissions
 from .serializers import *
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from .models import *
+from .permissions import IsManagerOrReadOnly
 
 
 
@@ -23,8 +25,12 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
-class LoginView(generics.GenericAPIView):
-    serializer_class = LoginSerializer
+class CreatUserView(generics.GenericAPIView):
+
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                      IsManagerOrReadOnly]
+
+    serializer_class = CreateUserSerializer
 
     # handle user post data
     def post(self,request):
@@ -38,10 +44,16 @@ class LoginView(generics.GenericAPIView):
         return Response(user_data,status=status.HTTP_201_CREATED)
 
 
+class UsersView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
 # branch view
 class BranchList(generics.ListCreateAPIView):
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
+
 
 # order list view
 class OrderList(generics.ListCreateAPIView):
