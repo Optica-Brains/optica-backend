@@ -1,3 +1,4 @@
+from django.forms.models import model_to_dict
 from django.shortcuts import render
 from rest_framework import generics,status,permissions
 from .serializers import *
@@ -18,8 +19,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Add custom claims
         token['email'] = user.email
         token['id'] = user.id
-        token['full_name'] = 'John Doe'
-        token['branch'] = user.branch_id
+        token['full_name'] = user.full_name
+        token['branch'] = model_to_dict(user.branch)
         token['roles'] = list(user.groups.all().values())
         # ...
 
