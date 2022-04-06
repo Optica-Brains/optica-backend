@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['id','branch','departure_time','delivery_time']
+        fields = ['id','batch']
 
 
 class BranchSerializer(serializers.ModelSerializer):
