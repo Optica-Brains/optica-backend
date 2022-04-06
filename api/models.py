@@ -45,6 +45,7 @@ class Branch(models.Model):
 
 
 class User(AbstractBaseUser,PermissionsMixin):
+    full_name = models.CharField(max_length=30,null=True)
     email = models.EmailField(max_length= 225, unique=True,db_index=True)
     password = models.CharField(max_length=500)
     is_verified = models.BooleanField(default=False) 
