@@ -8,7 +8,7 @@ class UserManager(BaseUserManager):
     Maintaiining query sets that can be run
     """
 
-    def create_user(self,email ,branch, password=None):
+    def create_user(self,email, password=None):
         """
         Creating normal user
         """
@@ -45,6 +45,7 @@ class Branch(models.Model):
 
 
 class User(AbstractBaseUser,PermissionsMixin):
+    full_name = models.CharField(max_length=30,null=True)
     email = models.EmailField(max_length= 225, unique=True,db_index=True)
     password = models.CharField(max_length=500)
     is_verified = models.BooleanField(default=False) 
@@ -87,7 +88,7 @@ class Order(models.Model):
     departure_time = models.DateTimeField(null = True)
     delivery_time= models.DateTimeField(null = True)
     status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
-    branch = models.ForeignKey(Branch,related_name='order_branch',on_delete=models.CASCADE, null=False)
+    branch = models.ForeignKey(Branch,related_name='order_branch',on_delete=models.CASCADE, null=True)
     
     def __str__(self):
         return self.order_number
