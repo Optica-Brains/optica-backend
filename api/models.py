@@ -85,13 +85,21 @@ STATUS_CHOICES=(
 
 class Order(models.Model):
     order_number = models.CharField(max_length=250,null= False)
-    departure_time = models.DateTimeField(null = True)
-    delivery_time= models.DateTimeField(null = True)
-    status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
-    branch = models.ForeignKey(Branch,related_name='order_branch',on_delete=models.CASCADE, null=True)
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.order_number
 
+
+class Batch(models.Model):
+    batch_number = models.CharField(max_length=30)
+    departure_time = models.DateTimeField(null = True)
+    delivery_time= models.DateTimeField(null = True)
+    status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
+    branch_from = models.ForeignKey(Branch,related_name='order_branch',on_delete=models.CASCADE, null=True)
+    branch_to = models.ForeignKey(Branch,related_name='order_branch',on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.batch_number
 
 
