@@ -53,19 +53,34 @@ class UsersView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-
+class UserDetails(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    
 # branch view
 class BranchList(generics.ListCreateAPIView):
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
 
+class BranchDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Branch.objects.all()
+    serializer_class = BranchSerializer
 
-# order list view
-class OrderList(generics.ListCreateAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
 
-# order detail
-class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+# # order list view
+# class OrderList(generics.ListCreateAPIView):
+#     queryset = Order.objects.all()
+#     serializer_class = OrderSerializer
+
+# # order detail
+# class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Order.objects.all()
+#     serializer_class = OrderSerializer
+
+class BatchesList(generics.ListCreateAPIView):
+    queryset = Batch.objects.all()
+    serializer_class = BatchSerializer
+
+class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Batch.objects.all()
+    serializer_class = BatchSerializer

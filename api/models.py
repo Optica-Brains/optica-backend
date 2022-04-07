@@ -78,7 +78,6 @@ class User(AbstractBaseUser,PermissionsMixin):
 
 STATUS_CHOICES=(
     ('dispatched','DISPATCHED'),
-    ('progress','PROGRESS'),
     ('delivered','DELIVERED')
 
 )
@@ -90,8 +89,8 @@ class Batch(models.Model):
     departure_time = models.DateTimeField(null = True)
     delivery_time= models.DateTimeField(null = True)
     status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
-    branch_from = models.ForeignKey(Branch,related_name='order_branch_from',on_delete=models.CASCADE, null=True)
-    branch_to = models.ForeignKey(Branch,related_name='order_branch_to',on_delete=models.CASCADE, null=True)
+    branch_from = models.ForeignKey(Branch,related_name='batch_branch_from',on_delete=models.CASCADE, null=True)
+    branch_to = models.ForeignKey(Branch,related_name='batch_branch_to',on_delete=models.CASCADE, null=True)
     messenger = models.ForeignKey(User, related_name ='batch_messenger', on_delete=models.CASCADE, null=True)
     branch_staff = models.ForeignKey(User,related_name="accepted_batches", on_delete=models.CASCADE, null=True)
 
