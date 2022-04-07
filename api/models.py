@@ -86,7 +86,7 @@ STATUS_CHOICES=(
 
 class Batch(models.Model):
     batch_number = models.CharField(max_length=30)
-    departure_time = models.DateTimeField(null = True)
+    departure_time = models.DateTimeField(null = True, auto_now_add =True)
     delivery_time= models.DateTimeField(null = True)
     status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
     branch_from = models.ForeignKey(Branch,related_name='batch_branch_from',on_delete=models.CASCADE, null=True)
