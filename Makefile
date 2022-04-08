@@ -12,3 +12,9 @@ freeze:
 
 test:
 	python manage.py test
+
+install:
+	pip install -r requirements.txt
+
+su:
+	python manage.py createsuperuser

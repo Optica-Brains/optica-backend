@@ -20,7 +20,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['email'] = user.email
         token['id'] = user.id
         token['full_name'] = user.full_name
-        token['branch'] = model_to_dict(user.branch)
+        token['branch'] = model_to_dict(user.branch) if user.branch else {}
         token['roles'] = list(user.groups.all().values())
         # ...
 
@@ -84,3 +84,7 @@ class BatchesList(generics.ListCreateAPIView):
 class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Batch.objects.all()
     serializer_class = BatchSerializer
+
+    # def perform_create(self, serializer):
+    #     queryset = Batch.objects.all()
+    #     serializer.save
