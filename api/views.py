@@ -84,3 +84,7 @@ class BatchesList(generics.ListCreateAPIView):
 class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Batch.objects.all()
     serializer_class = BatchSerializer
+
+    # def perform_create(self, serializer):
+    #     queryset = Batch.objects.all()
+    #     serializer.save
