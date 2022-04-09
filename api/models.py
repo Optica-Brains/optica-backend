@@ -100,7 +100,7 @@ class Batch(models.Model):
 
 class Order(models.Model):
     order_number = models.CharField(max_length=250,null= False)
-    batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+    batch = models.ForeignKey(Batch,related_name='batch_order', on_delete=models.CASCADE)
     
     def __str__(self):
         return self.order_number

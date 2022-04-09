@@ -4,21 +4,16 @@ from .models import *
 
 
 
+class BatchSerializer(serializers.ModelSerializer):
+   class Meta:
+        model = Batch
+        fields = ['batch_number','departure_time','delivery_time','status','branch_from','branch_to','messenger','branch_staff','batch_order']
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id','batch']
-
-
-
-
-
-class BatchSerializer(serializers.ModelSerializer):
-   class Meta:
-        model = Batch
-        fields = ['batch_number','departure_time','delivery_time','status','branch_from','branch_to','messenger','branch_staff']
 
 
 class BranchSerializer(serializers.ModelSerializer):
