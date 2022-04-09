@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import(
     AbstractBaseUser, BaseUserManager , PermissionsMixin
@@ -86,7 +87,7 @@ STATUS_CHOICES=(
 
 class Batch(models.Model):
     batch_number = models.CharField(max_length=30)
-    departure_time = models.DateTimeField(null = True)
+    departure_time = models.DateTimeField(null = True, default=datetime.now)
     delivery_time= models.DateTimeField(null = True)
     status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
     branch_from = models.ForeignKey(Branch,related_name='batch_branch_from',on_delete=models.CASCADE, null=True)
@@ -97,10 +98,17 @@ class Batch(models.Model):
     def __str__(self):
         return self.batch_number
 
+    class Meta:
+        ordering = ['-departure_time']
+
 
 class Order(models.Model):
     order_number = models.CharField(max_length=250,null= False)
+<<<<<<< HEAD
     batch = models.ForeignKey(Batch,related_name='batch_order', on_delete=models.CASCADE)
+=======
+    batch = models.ForeignKey(Batch, related_name='batch_orders',on_delete=models.CASCADE)
+>>>>>>> 314b07b6911b3f17715e7a7e3596300c25e46d4e
     
     def __str__(self):
         return self.order_number
