@@ -7,6 +7,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import *
 from .permissions import IsManagerOrReadOnly
+from rest_framework.decorators import APIView
 
 
 
@@ -67,16 +68,6 @@ class BranchDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BranchSerializer
 
 
-# # order list view
-# class OrderList(generics.ListCreateAPIView):
-#     queryset = Order.objects.all()
-#     serializer_class = OrderSerializer
-
-# # order detail
-# class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Order.objects.all()
-#     serializer_class = OrderSerializer
-
 class BatchesList(generics.ListCreateAPIView):
     queryset = Batch.objects.all()
     serializer_class = BatchSerializer
@@ -85,6 +76,16 @@ class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Batch.objects.all()
     serializer_class = BatchSerializer
 
-    # def perform_create(self, serializer):
-    #     queryset = Batch.objects.all()
-    #     serializer.save
+
+# total batches view function
+class BatchSummary(APIView):
+    def get(self, request):
+        delivered = Batch.total_deliveries('delivered')
+        batches = Batch.total_batches()
+        dispatched = Batch.total_deliveries('dispatched')
+        return Response({
+            'batches': batches,
+            'delivered' : delivered,
+            'dispatched' : dispatched
+        })
+
