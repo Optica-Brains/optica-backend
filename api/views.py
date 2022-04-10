@@ -67,16 +67,6 @@ class BranchDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BranchSerializer
 
 
-# # order list view
-# class OrderList(generics.ListCreateAPIView):
-#     queryset = Order.objects.all()
-#     serializer_class = OrderSerializer
-
-# # order detail
-# class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Order.objects.all()
-#     serializer_class = OrderSerializer
-
 class BatchesList(generics.ListCreateAPIView):
     queryset = Batch.objects.all()
     serializer_class = BatchSerializer
@@ -85,6 +75,4 @@ class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Batch.objects.all()
     serializer_class = BatchSerializer
 
-    # def perform_create(self, serializer):
-    #     queryset = Batch.objects.all()
-    #     serializer.save
+ 
