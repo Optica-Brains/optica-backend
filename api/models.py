@@ -102,8 +102,23 @@ class Batch(models.Model):
 
     # total batches summary
     @classmethod
-    def total_baches(cls):
+    def total_deliveries(cls,status):
+        return cls.objects.filter(status=status).count()
+
+
+    @classmethod
+    def total_batches(cls):
         return cls.objects.count()
+
+    
+    
+
+     
+
+
+    # @classmethod
+    # def total_delivered(cls):
+    #     return cls.objects.where()
 
 
 class Order(models.Model):

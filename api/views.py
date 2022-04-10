@@ -78,17 +78,24 @@ class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 # total batches view function
-class BatchTotal(generics.ListAPIView):
-    queryset = Batch.total_baches()
-    serializer_class = BatchSerializer
-
-
+class BatchSummary(APIView):
+    def get(self, request):
+        delivered = Batch.total_deliveries('delivered')
+        batches = Batch.total_batches()
+        dispatched = Batch.total_deliveries('dispatched')
+        return Response({
+            'batches': batches,
+            'delivered' : delivered,
+            'dispatched' : dispatched
+        })
 
 
 # def batch_total(request):
-#     batches = Batch.total_baches()
+#     batches = Batch.total_batches()
+#     deliveries = Batch.total_deliveries()
 #     context = {
-#         'batches': batches
+#         'batches': batches,
+#         'deliveries': deliveries
 #     }
 #     print(batches)
 #     return render(request,'total.html',context)
