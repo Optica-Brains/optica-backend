@@ -16,6 +16,7 @@ urlpatterns= [
    path('batches/<int:pk>/',views.BatchDetail.as_view()),
    path('users/',views.UsersView.as_view()),
    path('users/<int:pk>/',views.UserDetails.as_view()),
+   path('delivery/<int:pk>/', views.timedelivered,name="delivery"),
 
 
    # jwt routes

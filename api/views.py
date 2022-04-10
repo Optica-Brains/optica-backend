@@ -88,3 +88,11 @@ class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
     # def perform_create(self, serializer):
     #     queryset = Batch.objects.all()
     #     serializer.save
+
+# class Batchconfirmation(generics.RetrieveUpdateDestroyAPIView):
+#     delivery_time = Batch.objects.get(id = id)
+
+def timedelivered(request,pk):
+
+    return render(request,'index.html')
+    
