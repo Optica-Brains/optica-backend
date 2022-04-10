@@ -16,6 +16,9 @@ urlpatterns= [
    path('batches/<int:pk>/',views.BatchDetail.as_view()),
    path('users/',views.UsersView.as_view()),
    path('users/<int:pk>/',views.UserDetails.as_view()),
+   path('total/',views.BatchTotal.as_view()),
+
+
 
 
    # jwt routes

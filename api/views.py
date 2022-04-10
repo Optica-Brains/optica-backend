@@ -7,6 +7,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import *
 from .permissions import IsManagerOrReadOnly
+from rest_framework.decorators import APIView
 
 
 
@@ -75,4 +76,19 @@ class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Batch.objects.all()
     serializer_class = BatchSerializer
 
- 
+
+# total batches view function
+class BatchTotal(generics.ListAPIView):
+    queryset = Batch.total_baches()
+    serializer_class = BatchSerializer
+
+
+
+
+# def batch_total(request):
+#     batches = Batch.total_baches()
+#     context = {
+#         'batches': batches
+#     }
+#     print(batches)
+#     return render(request,'total.html',context)
