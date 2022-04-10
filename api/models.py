@@ -88,13 +88,16 @@ STATUS_CHOICES=(
 class Batch(models.Model):
     batch_number = models.CharField(max_length=30)
     departure_time = models.DateTimeField(null = True, default=datetime.now)
-    delivery_time= models.DateTimeField(null = True)
+    delivery_time= models.DateTimeField(auto_now_add =True ,null = True)
     status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
     branch_from = models.ForeignKey(Branch,related_name='batch_branch_from',on_delete=models.CASCADE, null=True)
     branch_to = models.ForeignKey(Branch,related_name='batch_branch_to',on_delete=models.CASCADE, null=True)
     messenger = models.ForeignKey(User, related_name ='batch_messenger', on_delete=models.CASCADE, null=True)
     branch_staff = models.ForeignKey(User,related_name="accepted_batches", on_delete=models.CASCADE, null=True)
-
+    rider_status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
+    rider_delivery_time = models.DateTimeField(null =True)
+    manager_status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
+    manager_delivey_time = models.DateTimeField(null = True)
     def __str__(self):
         return self.batch_number
 
