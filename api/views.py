@@ -89,13 +89,3 @@ class BatchSummary(APIView):
             'dispatched' : dispatched
         })
 
-
-# def batch_total(request):
-#     batches = Batch.total_batches()
-#     deliveries = Batch.total_deliveries()
-#     context = {
-#         'batches': batches,
-#         'deliveries': deliveries
-#     }
-#     print(batches)
-#     return render(request,'total.html',context)
