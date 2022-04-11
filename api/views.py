@@ -21,7 +21,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['id'] = user.id
         token['full_name'] = user.full_name
         token['branch'] = model_to_dict(user.branch) if user.branch else {}
-        token['roles'] = list(user.groups.all().values())
+        token['roles'] = list(user.groups.all().values_list('id', flat=True))
         # ...
 
         return token
@@ -78,8 +78,15 @@ class BranchDetail(generics.RetrieveUpdateDestroyAPIView):
 #     serializer_class = OrderSerializer
 
 class BatchesList(generics.ListCreateAPIView):
-    queryset = Batch.objects.all()
+    # queryset = Batch.objects.all()
     serializer_class = BatchSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_in_group(3):
+            print("yet")
+            return Batch.objects.filter(messenger_id=user.id)
+        return Batch.objects.all()
 
 class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Batch.objects.all()
