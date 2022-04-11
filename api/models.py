@@ -80,7 +80,6 @@ class User(AbstractBaseUser,PermissionsMixin):
 STATUS_CHOICES=(
     ('dispatched','DISPATCHED'),
     ('delivered','DELIVERED')
-
 )
 
 
@@ -98,11 +97,25 @@ class Batch(models.Model):
     rider_delivery_time = models.DateTimeField(null =True)
     manager_status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
     manager_delivey_time = models.DateTimeField(null = True)
+
     def __str__(self):
         return self.batch_number
 
     class Meta:
         ordering = ['-departure_time']
+
+
+    def rider_delivery(self):
+        self.rider_delivery_time = datetime.now()
+        self.rider_status = 'delivered'
+        self.save()
+
+
+    def manager_delivery(self):
+        self.manager_delivey_time = datetime.now()
+        self.manager_status = 'delivered'
+        self.save()
+    
 
 
 class Order(models.Model):
@@ -111,3 +124,4 @@ class Order(models.Model):
     
     def __str__(self):
         return self.order_number
+
