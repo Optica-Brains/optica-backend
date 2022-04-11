@@ -99,10 +99,12 @@ class BatchSummary(APIView):
 
 class ManagerDelivery(APIView):
     def get(self,request,pk):
-        manager_delivery = Batch.objects.filter(id=pk).first().manager_delivery()
-        serializer = BatchSerializer(manager_delivery)
+        date = request.data.get('date') or None
+        manager_delivery = Batch.objects.filter(id=pk).first()
         
         if manager_delivery:
+            manager_delivery.manager_delivery(date)
+            serializer = BatchSerializer(manager_delivery)
             return Response(serializer.data)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -110,11 +112,11 @@ class ManagerDelivery(APIView):
 
 class RiderDelivery(APIView):
     def get(self,request,pk):
-        print(Batch.objects.filter(id=pk))
-        batch = Batch.objects.filter(id=pk).first().rider_delivery()
-        serializer = BatchSerializer(batch)
+        batch = Batch.objects.filter(id=pk).first()
 
         if batch:
+            batch.rider_delivery()
+            serializer = BatchSerializer(batch)
             return Response(serializer.data)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
