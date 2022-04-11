@@ -132,9 +132,12 @@ class Batch(models.Model):
         self.save()
 
 
-    def manager_delivery(self, date=None):
+    def manager_delivery(self, user,date=None):
         self.manager_delivey_time = date if date is not None else self.rider_delivery_time
+        self.delivery_time = date if date is not None else self.rider_delivery_time
         self.manager_status = 'delivered'
+        self.status = 'delivered'
+        self.branch_staff_id = user.id
 
         self.save()
     

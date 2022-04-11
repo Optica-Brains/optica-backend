@@ -98,12 +98,12 @@ class BatchSummary(APIView):
 
 
 class ManagerDelivery(APIView):
-    def get(self,request,pk):
+    def post(self,request,pk):
         date = request.data.get('date') or None
         manager_delivery = Batch.objects.filter(id=pk).first()
         
         if manager_delivery:
-            manager_delivery.manager_delivery(date)
+            manager_delivery.manager_delivery(self.request.user, date)
             serializer = BatchSerializer(manager_delivery)
             return Response(serializer.data)
         else:
@@ -111,7 +111,7 @@ class ManagerDelivery(APIView):
 
 
 class RiderDelivery(APIView):
-    def get(self,request,pk):
+    def post(self,request,pk):
         batch = Batch.objects.filter(id=pk).first()
 
         if batch:
