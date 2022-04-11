@@ -83,7 +83,6 @@ STATUS_CHOICES=(
 )
 
 
-
 class Batch(models.Model):
     batch_number = models.CharField(max_length=30)
     departure_time = models.DateTimeField(null = True, default=datetime.now)
@@ -103,6 +102,26 @@ class Batch(models.Model):
 
     class Meta:
         ordering = ['-departure_time']
+
+    # total batches summary
+    @classmethod
+    def total_deliveries(cls,status):
+        return cls.objects.filter(status=status).count()
+
+
+    @classmethod
+    def total_batches(cls):
+        return cls.objects.count()
+
+    
+    
+
+     
+
+
+    # @classmethod
+    # def total_delivered(cls):
+    #     return cls.objects.where()
 
 
     def rider_delivery(self):

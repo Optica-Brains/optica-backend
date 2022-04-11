@@ -7,7 +7,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import *
 from .permissions import IsManagerOrReadOnly
-from rest_framework.views import APIView
+from rest_framework.decorators import APIView
 
 
 
@@ -77,5 +77,37 @@ class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BatchSerializer
 
 
+# total batches view function
+class BatchSummary(APIView):
+    def get(self, request):
+        delivered = Batch.total_deliveries('delivered')
+        batches = Batch.total_batches()
+        dispatched = Batch.total_deliveries('dispatched')
+        return Response({
+            'batches': batches,
+            'delivered' : delivered,
+            'dispatched' : dispatched
+        })
 
 
+class ManagerDelivery(APIView):
+    def get(self,request,pk):
+        manager_delivery = Batch.objects.filter(id=pk).first().manager_delivery()
+        serializer = BatchSerializer(manager_delivery)
+        
+        if manager_delivery:
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_201_CREATED)
+
+
+class RiderDelivery(APIView):
+    def get(self,request,pk):
+        print(Batch.objects.filter(id=pk))
+        batch = Batch.objects.filter(id=pk).first().rider_delivery()
+        serializer = BatchSerializer(batch)
+
+        if batch:
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_201_CREATED)
