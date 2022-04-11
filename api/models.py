@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import(
     AbstractBaseUser, BaseUserManager , PermissionsMixin
 )
+from django.utils import timezone
 
 class UserManager(BaseUserManager):
     """
@@ -80,7 +81,6 @@ class User(AbstractBaseUser,PermissionsMixin):
 STATUS_CHOICES=(
     ('dispatched','DISPATCHED'),
     ('delivered','DELIVERED')
-
 )
 
 
@@ -93,6 +93,11 @@ class Batch(models.Model):
     branch_to = models.ForeignKey(Branch,related_name='batch_branch_to',on_delete=models.CASCADE, null=True)
     messenger = models.ForeignKey(User, related_name ='batch_messenger', on_delete=models.CASCADE, null=True)
     branch_staff = models.ForeignKey(User,related_name="accepted_batches", on_delete=models.CASCADE, null=True)
+    rider_status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
+    rider_delivery_time = models.DateTimeField(null =True)
+    manager_status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
+    manager_delivey_time = models.DateTimeField(null = True)
+    created_by = models.ForeignKey(User, related_name ='created_batches', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.batch_number
@@ -121,9 +126,27 @@ class Batch(models.Model):
     #     return cls.objects.where()
 
 
+    def rider_delivery(self):
+        self.rider_delivery_time = datetime.now(tz=timezone.utc)
+        self.rider_status = 'delivered'
+        self.save()
+
+
+    def manager_delivery(self, user,date=None):
+        self.manager_delivey_time = date if date is not None else self.rider_delivery_time
+        self.delivery_time = date if date is not None else self.rider_delivery_time
+        self.manager_status = 'delivered'
+        self.status = 'delivered'
+        self.branch_staff_id = user.id
+
+        self.save()
+    
+
+
 class Order(models.Model):
     order_number = models.CharField(max_length=250,null= False)
     batch = models.ForeignKey(Batch, related_name='batch_orders',on_delete=models.CASCADE)
     
     def __str__(self):
         return self.order_number
+

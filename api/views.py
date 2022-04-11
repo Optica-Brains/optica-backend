@@ -96,3 +96,27 @@ class BatchSummary(APIView):
             'dispatched' : dispatched
         })
 
+
+class ManagerDelivery(APIView):
+    def post(self,request,pk):
+        date = request.data.get('date') or None
+        manager_delivery = Batch.objects.filter(id=pk).first()
+        
+        if manager_delivery:
+            manager_delivery.manager_delivery(self.request.user, date)
+            serializer = BatchSerializer(manager_delivery)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class RiderDelivery(APIView):
+    def post(self,request,pk):
+        batch = Batch.objects.filter(id=pk).first()
+
+        if batch:
+            batch.rider_delivery()
+            serializer = BatchSerializer(batch)
+            return Response(serializer.data)
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)

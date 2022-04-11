@@ -17,6 +17,10 @@ urlpatterns= [
    path('users/',views.UsersView.as_view()),
    path('users/<int:pk>/',views.UserDetails.as_view()),
    path('summary/',views.BatchSummary.as_view()),
+   path('rider/<int:pk>/',views.RiderDelivery.as_view()),
+   path('manager/<int:pk>/',views.ManagerDelivery.as_view()),
+
+
 
 
    # jwt routes

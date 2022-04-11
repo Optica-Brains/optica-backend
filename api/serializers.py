@@ -28,6 +28,7 @@ class BatchSerializer(serializers.ModelSerializer):
    branch_to = BranchShowSerializer(read_only=True)
    branch_from = BranchShowSerializer(read_only=True)
    branch_staff = UserShowSerializer(read_only=True)
+   created_by = UserShowSerializer(read_only=True)
 
    branch_to_id = serializers.IntegerField(required=False)
    branch_from_id = serializers.IntegerField()
@@ -38,6 +39,8 @@ class BatchSerializer(serializers.ModelSerializer):
         orders_data = validated_data.pop('batch_orders')
 
         batch = Batch.objects.create(**validated_data)
+
+        batch.created_by = self.reuest.user
 
         for order_data in orders_data:
             Order.objects.create(batch=batch,**order_data)
