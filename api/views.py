@@ -98,7 +98,7 @@ class ManagerDelivery(APIView):
         if manager_delivery:
             return Response(serializer.data)
         else:
-            return Response(status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class RiderDelivery(APIView):
@@ -110,4 +110,4 @@ class RiderDelivery(APIView):
         if batch:
             return Response(serializer.data)
         else:
-            return Response(status=status.HTTP_201_CREATED)
+            return Response(status=status.HTTP_404_NOT_FOUND)
