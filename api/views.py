@@ -91,7 +91,7 @@ class BatchSummary(APIView):
 
 
 class ManagerDelivery(APIView):
-    def get(self,request,pk):
+    def post(self,request,pk):
         manager_delivery = Batch.objects.filter(id=pk).first().manager_delivery()
         serializer = BatchSerializer(manager_delivery)
         
@@ -102,7 +102,7 @@ class ManagerDelivery(APIView):
 
 
 class RiderDelivery(APIView):
-    def get(self,request,pk):
+    def post(self,request,pk):
         print(Batch.objects.filter(id=pk))
         batch = Batch.objects.filter(id=pk).first().rider_delivery()
         serializer = BatchSerializer(batch)
