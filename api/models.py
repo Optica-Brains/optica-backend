@@ -18,8 +18,8 @@ class UserManager(BaseUserManager):
             raise TypeError('Users should have email')
         
         user = self.model(email=self.normalize_email(email))
-        user.set_password(self.cleaned_data['password'])
-        user.save()
+        user.set_password(password)
+        user.save(using=self._db)
         return user
 
     def create_superuser(self,email , password=None):
