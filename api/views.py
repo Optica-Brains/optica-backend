@@ -79,6 +79,9 @@ class BatchesList(generics.ListCreateAPIView):
             return Batch.objects.filter(messenger_id=user.id)
         return Batch.objects.all()
 
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
+
 class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Batch.objects.all()
     serializer_class = BatchSerializer

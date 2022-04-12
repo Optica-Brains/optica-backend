@@ -40,8 +40,6 @@ class BatchSerializer(serializers.ModelSerializer):
 
         batch = Batch.objects.create(**validated_data)
 
-        batch.created_by = self.request.user
-
         for order_data in orders_data:
             Order.objects.create(batch=batch,**order_data)
         return batch
