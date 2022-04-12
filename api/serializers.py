@@ -28,6 +28,7 @@ class BatchSerializer(serializers.ModelSerializer):
    branch_to = BranchShowSerializer(read_only=True)
    branch_from = BranchShowSerializer(read_only=True)
    branch_staff = UserShowSerializer(read_only=True)
+   created_by = UserShowSerializer(read_only=True)
 
    branch_to_id = serializers.IntegerField(required=False)
    branch_from_id = serializers.IntegerField()
