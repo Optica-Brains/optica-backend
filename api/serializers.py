@@ -113,10 +113,11 @@ class BranchSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     batch_messenger = BatchSerializer(read_only=True,many=True)
+    password = serializers.CharField(
+        min_length=6, write_only=True, required=True)
     class Meta:
         model = User
-        exclude = ['password']
-
+        fields = '__all__'
 
 class CreateUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=50,min_length=6,write_only=True)

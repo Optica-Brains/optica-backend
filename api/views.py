@@ -50,9 +50,14 @@ class CreatUserView(generics.GenericAPIView):
         return Response(user_data,status=status.HTTP_201_CREATED)
 
 
-class UsersView(generics.ListAPIView):
+class UsersView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+    def perform_create(self, serializer):
+        #pdb.set_trace()
+        # password = obj.set_password(obj.password)
+        serializer.save(password=self.request.data['password'])
 
 class UserDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
@@ -81,6 +86,7 @@ class BatchesList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
+
 
 class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Batch.objects.all()
