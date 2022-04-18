@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import(
     AbstractBaseUser, BaseUserManager , PermissionsMixin
@@ -125,13 +126,13 @@ class Batch(models.Model):
 
 
     def rider_delivery(self):
-        self.rider_delivery_time = datetime.now()
+        self.rider_delivery_time = timezone.now()
         self.rider_status = 'delivered'
         self.save()
 
 
     def manager_delivery(self):
-        self.manager_delivey_time = datetime.now()
+        self.manager_delivey_time = timezone.now()
         self.manager_status = 'delivered'
         self.save()
     
