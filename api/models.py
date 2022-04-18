@@ -1,9 +1,10 @@
-from datetime import datetime
+import datetime
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import(
     AbstractBaseUser, BaseUserManager , PermissionsMixin
 )
+from django.utils import timezone
 
 class UserManager(BaseUserManager):
     """
@@ -86,8 +87,8 @@ STATUS_CHOICES=(
 
 class Batch(models.Model):
     batch_number = models.CharField(max_length=30)
-    departure_time = models.DateTimeField(null = True, default=datetime.now)
-    delivery_time= models.DateTimeField(auto_now_add =True ,null = True)
+    departure_time = models.DateTimeField(null = True, default=timezone.now)
+    delivery_time= models.DateTimeField(null = True)
     status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
     branch_from = models.ForeignKey(Branch,related_name='batch_branch_from',on_delete=models.CASCADE, null=True)
     branch_to = models.ForeignKey(Branch,related_name='batch_branch_to',on_delete=models.CASCADE, null=True)
@@ -97,6 +98,7 @@ class Batch(models.Model):
     rider_delivery_time = models.DateTimeField(null =True)
     manager_status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
     manager_delivey_time = models.DateTimeField(null = True)
+    created_by = models.ForeignKey(User, related_name ='created_batches', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.batch_number
@@ -126,14 +128,18 @@ class Batch(models.Model):
 
 
     def rider_delivery(self):
-        self.rider_delivery_time = timezone.now()
+        self.rider_delivery_time = datetime.datetime.now()
         self.rider_status = 'delivered'
         self.save()
 
 
-    def manager_delivery(self):
-        self.manager_delivey_time = timezone.now()
+    def manager_delivery(self, user,date=None):
+        self.manager_delivey_time = date if date is not None else self.rider_delivery_time
+        self.delivery_time = date if date is not None else self.rider_delivery_time
         self.manager_status = 'delivered'
+        self.status = 'delivered'
+        self.branch_staff_id = user.id
+
         self.save()
     
 
