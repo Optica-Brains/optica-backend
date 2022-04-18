@@ -1,3 +1,5 @@
+import datetime
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import(
     AbstractBaseUser, BaseUserManager , PermissionsMixin
@@ -86,7 +88,7 @@ STATUS_CHOICES=(
 
 class Batch(models.Model):
     batch_number = models.CharField(max_length=30)
-    departure_time = models.DateTimeField(null = True, default=datetime.now)
+    departure_time = models.DateTimeField(null = True, default=timezone.now)
     delivery_time= models.DateTimeField(null = True)
     status = models.CharField(max_length = 30,choices=STATUS_CHOICES,default='dispatched')
     branch_from = models.ForeignKey(Branch,related_name='batch_branch_from',on_delete=models.CASCADE, null=True)
@@ -127,7 +129,7 @@ class Batch(models.Model):
 
 
     def rider_delivery(self):
-        self.rider_delivery_time = datetime.now(tz=timezone.utc)
+        self.rider_delivery_time = datetime.datetime.now()
         self.rider_status = 'delivered'
         self.save()
 
